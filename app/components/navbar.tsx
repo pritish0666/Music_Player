@@ -10,7 +10,7 @@ const Navbar = () => {
 
     <div>
       <h1 className='text-4xl w-full p-6 font-bold'>
-        CHARU&#127925;
+        CHORDS&#127925;
       </h1>
     </div>
 

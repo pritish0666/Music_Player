@@ -97,7 +97,7 @@ const MusicPlayer = () => {
 
       try {
         const response = await axios.request(options1);
-        // console.log(response.data.tracks[0].preview_url);
+        console.log(response.data.tracks[0].preview_url);
         setAudioUrl(response.data.tracks[0].preview_url);
       } catch (error) {
         console.error(error);
