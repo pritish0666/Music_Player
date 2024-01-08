@@ -2,8 +2,10 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { db } from "../firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { doc,collection, getDoc, getDocs } from "firebase/firestore";
 import ReactPlayer from "react-player";
+
+
 
 
 const Page = () => {
@@ -13,27 +15,84 @@ const Page = () => {
     const [playing, setPlaying] = useState(false);
     const [audioUrl, setAudioUrl] = useState("");
     const [name, setName] = useState("");
+    const [allsongs, setAllsongs] = useState([] as any);
+    const [song, setSong] = useState("");
+
+
+
+    const onSearch = async () => {
+        const docRef = doc(db, "songs", music);
+        const docSnap = await getDoc(docRef);
+    
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          console.log(data);
+          setCover(data.cover);
+          setAudioUrl(data.url);
+          console.log(data.url);
+          setName(data.name);
+    
+          // Uncomment the following line if you want to automatically start playing the song
+          setPlaying(true);
+        } else {
+          console.log("No such document!");
+        }
+      };
+
+
+
+
+    
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const querySnapshot = await getDocs(collection(db, "songs"));
+            const songsData = querySnapshot.docs.map((doc) => doc.data());
+            setAllsongs(songsData);
+          } catch (error) {
+            console.error("Error fetching data:", error);
+          }
+        };
+    
+        fetchData(); // Immediately invoke the async function
+    
+      }, []);
   
     const audioRef = useRef<HTMLAudioElement | null>(null);
+
+    const handleSongClick = (songName: string) => {
+        // Set the music
+        setSong(songName);
+      };
   
-    const onSearch = async () => {
-      const docRef = doc(db, "songs", music);
-      const docSnap = await getDoc(docRef);
-  
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        console.log(data)
-        setCover(data.cover);
-        setAudioUrl(data.url);
-        console.log(data.url)
-        setName(data.name);
-  
-        // Uncomment the following line if you want to automatically start playing the song
-        setPlaying(true);
-      } else {
-        console.log("No such document!");
-      }
-    };
+
+    useEffect(() => {
+        const fetchSongData = async () => {
+          if (song !== "") {
+            const docRef = doc(db, "songs", song);
+            const docSnap = await getDoc(docRef);
+    
+            if (docSnap.exists()) {
+              const data = docSnap.data();
+              console.log(data);
+              setCover(data.cover);
+              setAudioUrl(data.url);
+              console.log(data.url);
+              setName(data.name);
+    
+              // Uncomment the following line if you want to automatically start playing the song
+              setPlaying(true);
+            } else {
+              console.log("No such document!");
+            }
+          }
+        };
+    
+        fetchSongData();
+    
+      }, [song]);
   
     const handlePlayPause = () => {
       setPlaying(!playing);
@@ -84,9 +143,21 @@ const Page = () => {
   
     return (
         <div className="flex flex-col h-screen">
-        <div className="flex flex-1">
+        <div className="flex flex-1 border-">
           <div className="flex-1 p-4">
             <h1>FIRST</h1>
+            <div>
+
+              {allsongs.map((song: any, index: any) => (
+                <button
+                  key={index}
+                  onClick={() => handleSongClick(song.name)}
+                  className="text-white bg-blue-500 p-2 m-2 rounded-md"
+                >
+                  {song.name}
+                </button>
+              ))}
+            </div>
           </div>
   
           <div className="flex-1 p-4">
