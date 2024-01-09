@@ -171,47 +171,48 @@ const Page = () => {
         </div>
       </div>
 
-      <div className="w-full p-4 bg-[rgba(27,29,51,0.5)] text-white">
-        <div className="p-4 bg-[rgba(27,29,51,0)] text-white">
-          <div className="flex flex-col items-center justify-center">
-            <div>
-              <h2 className="text-2xl mx-auto font-bold mb-4">{name}</h2>
-            </div>
-            <div>
-              {cover && (
-                <img
-                  src={cover}
-                  alt="cover"
-                  className="rounded-md mx-auto shadow-md mb-4"
-                  style={{ width: "150px", height: "150px" }}
-                />
-              )}
+      <div>
+        {cover && (
+          <div className="p-4 bg-[rgba(27,29,51,0.5)] text-white">
+            <div className="flex flex-col items-center justify-center">
               <div>
-                {isClient && (
-                  <ReactPlayer
-                    className="mx-auto"
-                    url={audioUrl}
-                    playing={playing}
-                    controls
-                    width="900px"
-                    height="50px"
-                  ></ReactPlayer>
+                <h2 className="text-2xl mx-auto font-bold mb-4">{name}</h2>
+              </div>
+              <div>
+                {cover && (
+                  <img
+                    src={cover}
+                    alt="cover"
+                    className="rounded-md mx-auto shadow-md mb-4"
+                    style={{ width: "150px", height: "150px" }}
+                  />
                 )}
-                {/* <button onClick={handlePlayPause}>
+                <div>
+                  {isClient && (
+                    <ReactPlayer
+                      className="mx-auto"
+                      url={audioUrl}
+                      playing={playing}
+                      controls
+                      width="900px"
+                      height="50px"
+                    ></ReactPlayer>
+                  )}
+                  {/* <button onClick={handlePlayPause}>
                 {playing ? "Pause" : "Play"}
               </button> */}
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* <audio
+            {/* <audio
               ref={audioRef}
               src={audioUrl}
               onTimeUpdate={handleTimeUpdate}
               className="w-full mb-4"
             ></audio> */}
 
-          {/* <div className="flex items-center justify-between">
+            {/* <div className="flex items-center justify-between">
               <button className="text-3xl">&#9664;</button>
   
               <button
@@ -225,13 +226,14 @@ const Page = () => {
               <button className="text-3xl">&#9654;</button>
             </div> */}
 
-          {/* <input
+            {/* <input
               type="range"
               value={progress}
               onChange={handleSeek}
               className="w-full mt-4"
             /> */}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
